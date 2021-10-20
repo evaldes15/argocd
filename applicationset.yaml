@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: apimkt-works
+  namespace: argocd
+spec:
+  generators:
+  - git:
+      repoURL: ssh://git@globaldevtools.bbva.com:7999/api_mkt/mx-bbva-apimkt-apps.git
+      revision: works
+      directories:
+      - path: '**/**'
+  template:
+    metadata:
+      name: '{{path.basename}}'
+      #labels:
+      #  environment: test
+    spec:
+      project: works
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+      source:
+        repoURL: ssh://git@globaldevtools.bbva.com:7999/api_mkt/mx-bbva-apimkt-apps.git
+        targetRevision: works
+        path: '{{path}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: argocd

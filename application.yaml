@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  namespace: argocd
+  name: mx-bbva-capacitacion-demo-test
+spec:
+  destination:
+    name: ''
+    namespace: argocd
+    server: https://kubernetes.default.svc
+  source:
+    path: test/mx-bbva-capacitacion-demo-test
+    repoURL: ssh://git@globaldevtools.bbva.com:7999/api_mkt/mx-bbva-apimkt-apps.git
+    targetRevision: works
+  project: works
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: false
